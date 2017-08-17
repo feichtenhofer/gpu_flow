@@ -169,7 +169,7 @@ int main( int argc, char *argv[] )
 
 
 			std::string fName(video);
-			std:string path(video);
+			std::string path(video);
 			size_t last_slash_idx = std::string::npos;
 			if (!createOutDirs)
 			{
