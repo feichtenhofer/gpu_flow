@@ -17,7 +17,6 @@ GPU based optical flow extraction in OpenCV
 2. `cd build`
 3. `cmake ..`
 4. `make`
-5. `sudo make install`
 
 ### Configuration:
 You should adjust the input and output directories by editing the variables `vid_path`, `out_path` and `out_path_jpeg` in `compute_flow.cpp`. Note that these folders have to exist before executing.
