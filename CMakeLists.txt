@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.4)
-
+#set(OpenCV_DIR /home/pedro/opencv-3.1.0/build)
 # QT5 insert
 
   # Tell CMake to run moc when necessary:
@@ -23,8 +23,9 @@ cmake_minimum_required(VERSION 2.4)
   set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
 # OpenCV Config
+SET(OpenCV_DIR "/home/pedro/opencv-2.4.13.6/build")
 find_package( OpenCV REQUIRED )
-
+set(OpenCV_FOUND 1)
 message(STATUS "    version: ${OpenCV_VERSION}")
 message("-- OPENCV include:   " ${OpenCV_INCLUDE_DIRS})
 message("-- OPENCV libs dir:  " ${OpenCV_LIB_DIR})
@@ -41,19 +42,34 @@ endif(COMMAND cmake_policy)
 
 ################################
 
-ADD_EXECUTABLE(
-  compute_flow
-  compute_flow.cpp
-  ${SRCS}
-)
+option(WARP ON)
+if(WARP)
+    ADD_EXECUTABLE(
+      compute_flow_si_warp
+      compute_flow_si_warp.cpp
+      ${SRCS}
+    )
 
-TARGET_LINK_LIBRARIES(
-  compute_flow
-  ${OPENCV_LIBRARIES}
-  ${OpenCV_LIBS}
-${Qt5Widgets_LIBRARIES}
-)
+    TARGET_LINK_LIBRARIES(
+      compute_flow_si_warp
+      ${OPENCV_LIBRARIES}
+      ${OpenCV_LIBS}
+      ${Qt5Widgets_LIBRARIES}
+    )
+else()
+    ADD_EXECUTABLE(
+      compute_flow
+      compute_flow.cpp
+      ${SRCS}
+    )
 
+    TARGET_LINK_LIBRARIES(
+      compute_flow
+      ${OPENCV_LIBRARIES}
+      ${OpenCV_LIBS}
+      ${Qt5Widgets_LIBRARIES}
+    )
+endif()
 ################################
 
 foreach(dir ${DIRS})
@@ -61,4 +77,3 @@ foreach(dir ${DIRS})
   LIST(APPEND h_files ${files})
 endforeach(dir)
 add_custom_target(TAGS etags --members -l c++ ${h_files} ${SRCS})
-
