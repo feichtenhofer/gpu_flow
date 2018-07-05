@@ -8,7 +8,7 @@ GPU based optical flow extraction in OpenCV
 ** or by adaptively scaling the displacements to the radiometric resolution of the output image
 
 ### Dependencies
-* [OpenCV 2.4] (http://opencv.org/downloads.html)
+* [OpenCV 2.4] (http://opencv.org/downloads.html) (if you want OpenCV 3.1, tell me, I'll do the port)
 * [Qt 5.4] (https://www.qt.io/qt5-4/)
 * [cmake] (https://cmake.org/)
 
@@ -19,11 +19,15 @@ GPU based optical flow extraction in OpenCV
 4. `make`
 
 ### Configuration:
-You should adjust the input and output directories by editing the variables `vid_path`, `out_path` and `out_path_jpeg` in `compute_flow.cpp`. Note that these folders have to exist before executing.
+You should adjust the input and output directories by passing in `vid_path` and `out_path`. Note that vid_path must exist, Qt will create out_path. Use -h option t for more.
+In the CMakeLists.txt there is an option called WARP. This selects if you want warped optical flow or not. The warped optical flow file also outputs optical flows as a single BGR image (red is the flow magnitude). In the compute_flow_si_warp file itself there is a warp variable that you can set to false to just compute normal flow. If you want grayscale for images (x and y) use compute_flow.
 
 ### Usage:
 ```
-./brox_flow [OPTION]...
+./compute_flow [OPTION]...
+```
+```
+./compute_flow_si_warp [OPTION] ..
 ```
 
 Available options:
@@ -31,6 +35,8 @@ Available options:
 * `gpuID`: use this GPU ID [0]
 * `type`: use this flow method Brox = 0, TVL1 = 1 [1] 
 * `skip`: the number of frames that are skipped between flow calcuation [1]
+* `vid_path`: folder with input videos
+* `out_path`: folder where a folder per video containing optical flow frames will be created
 
 Additional features in `compute_flow.cpp`:
 * `float MIN_SZ = 256`: defines the smallest side of the frame for optical flow computation
@@ -39,7 +45,7 @@ Additional features in `compute_flow.cpp`:
 
 ### Example:
 ```
-./brox_flow gpuID=0 type=1 
+./compute_flow --gpuID=0 --type=1 --vid_path=test --vid_path=test_out --stride=2
 ```
 
 
