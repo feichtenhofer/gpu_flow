@@ -260,7 +260,7 @@ int main( int argc, char *argv[] )
 				QString out_folder_bins = QString::fromStdString(out_path + "bins/" + fName);
 				QDir().mkpath(out_folder_bins);
 				std::string outfile = out_path + "bins/" + fName + ".bin";
-				FILE *fx = fopen(outfile.c_str(),"wb");
+				fx = fopen(outfile.c_str(),"wb");
 			}
 
 
